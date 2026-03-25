@@ -1,0 +1,30 @@
+services:
+  flowable-rest:
+    image: flowable/flowable-rest
+    depends_on:
+      - flowable-db
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=org.postgresql.Driver
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://flowable-db:5432/flowable
+      - SPRING_DATASOURCE_USERNAME=flowable
+      - SPRING_DATASOURCE_PASSWORD=flowable
+      - FLOWABLE_COMMON_APP_IDM-ADMIN_USER=admin
+      - FLOWABLE_COMMON_APP_IDM-ADMIN_PASSWORD=test
+    ports:
+      - 8080:8080
+    entrypoint: ["./wait-for-something.sh", "flowable-db", "5432", "PostgreSQL", "/flowable-entrypoint.sh"]
+
+  flowable-db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_PASSWORD=flowable
+      - POSTGRES_USER=flowable
+      - POSTGRES_DB=flowable
+    ports:
+      - 5433:5432
+    volumes:
+      - flowable-data:/var/lib/postgresql/data
+
+volumes:
+  flowable-data:

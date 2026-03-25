@@ -25,3 +25,7 @@ k8s/index.yaml
 
 .claude/settings.local.json
 .claude/worktrees
+
+# Flowable UI
+flowable-ui/node_modules
+flowable-ui/dist
